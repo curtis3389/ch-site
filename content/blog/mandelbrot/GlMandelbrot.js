@@ -1,5 +1,5 @@
-import {h} from 'https://esm.sh/preact';
-import {useEffect,useState} from 'https://esm.sh/preact/hooks';
+import {h, Fragment} from 'https://esm.sh/preact';
+import {useEffect, useState} from 'https://esm.sh/preact/hooks';
 
 const vertexShaderSource = `
   attribute vec4 aVertexPosition;
@@ -132,10 +132,10 @@ class ShaderProgram {
     gl.enableVertexAttribArray(this.vertexPosition);
   }
 
-  setUniforms(gl, x, y, width, height) {
-    gl.uniform1f(this.bound, 2.0)
-    gl.uniform2f(this.topLeft, x, y);
-    gl.uniform2f(this.dimensions, width, height);
+  setUniforms(gl, viewport, settings) {
+    gl.uniform1f(this.bound, settings.bound)
+    gl.uniform2f(this.topLeft, viewport.x, viewport.y);
+    gl.uniform2f(this.dimensions, viewport.width, viewport.height);
     gl.uniform2f(this.screenDimensions, this.canvasWidth, this.canvasHeight)
   }
 }
@@ -153,7 +153,7 @@ function createPositionBuffer(gl) {
   return buffer;
 }
 
-function drawScene(gl, shaderProgram, viewport) {
+function drawScene(gl, shaderProgram, viewport, settings) {
   const positionBuffer = createPositionBuffer(gl);
 
   // clear everything and setup depth
@@ -165,104 +165,20 @@ function drawScene(gl, shaderProgram, viewport) {
 
   gl.useProgram(shaderProgram.program);
 
-  shaderProgram.setUniforms(gl, viewport.x, viewport.y, viewport.width, viewport.height);
+  shaderProgram.setUniforms(gl, viewport, settings);
 
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 }
 
-/**
- * Gets the (x, y) coordinates of the given mouse event in the given canvas.
- * @param canvas The canvas the mouse event was on.
- * @param event The mouse event to get the coordinates of.
- * @returns {{x: number, y: number}} The coordinates of the mouse event.
- */
-export function get_cursor_position(canvas, event) {
-  const rect = canvas.getBoundingClientRect();
-  const x = event.clientX - rect.left;
-  const y = event.clientY - rect.top;
-  return {
-    x: x,
-    y: y,
-  };
-}
-
 export function GlMandelbrot(props) {
-  const { canvasId } = props;
+  const {canvasId, bound, iterations, viewport} = props;
   const canvas = document.getElementById(canvasId);
   const gl = canvas.getContext('webgl');
-  const shaderProgram = new ShaderProgram(gl, canvas);
-  const [viewport, setViewport] = useState({
-    x: -2.0,
-    y: -2.0,
-    width: 4.0,
-    height: 4.0,
-  });
-  const [bound, setBound] = useState(2.0);
-  const [iterations, setIterations] = useState(256);
-
-  const to_mandelbrot_coordinates = (canvas_x, canvas_y) => {
-    const new_x = viewport.x + (viewport.width * (canvas_x / canvas.width));
-    const new_y = viewport.y + (viewport.height * (canvas_y / canvas.height));
-    return {
-      x: new_x,
-      y: new_y,
-    };
-  };
-
-  const scaleAt = (pos, ratio) => {
-    const new_width = viewport.width * ratio;
-    const new_height = viewport.height * ratio;
-    const new_x = pos.x - (new_width / 2);
-    const new_y = pos.y - (new_height / 2);
-    setViewport({
-      x: new_x,
-      y: new_y,
-      width: new_width,
-      height: new_height,
-    });
-  };
-
-  const onClick = (event) => {
-    event.preventDefault();
-    const mandelbrot_pos = () => {
-      const canvas_pos = get_cursor_position(canvas, event);
-      return to_mandelbrot_coordinates(canvas_pos.x, canvas_pos.y);
-    };
-
-    if (event.button === 0 && !event.shiftKey) {
-      // zoom in
-      scaleAt(mandelbrot_pos(), 0.5);
-    } else if (event.button === 0 && event.shiftKey) {
-      // zoom out
-      scaleAt(mandelbrot_pos(), 2.0);
-    }
-  };
-
-  const fromEvent = (setValue) => (event) => {
-    setValue(event.target.value);
-  };
-  const onInputBound = fromEvent(setBound);
-  const onInputIterations = fromEvent(setIterations);
+  const [shaderProgram, _setShaderProgram] = useState(new ShaderProgram(gl, canvas));
 
   useEffect(() => {
-    canvas.addEventListener('click', onClick);
-    return () => {
-      canvas.removeEventListener('click', onClick);
-    };
-  }, [canvas, onClick]);
+    drawScene(gl, shaderProgram, viewport, {bound, iterations});
+  }, [gl, shaderProgram, viewport, bound, iterations]);
 
-  useEffect(() => {
-    drawScene(gl, shaderProgram, viewport);
-  }, [canvas, viewport, bound, iterations]);
-
-  return h('div', null, [
-    h('label', null, [
-      'Bound',
-      h('input', {type: 'number', value: bound, onInput: onInputBound}),
-    ]),
-    h('label', null, [
-      'Iterations',
-      h('input', {type: 'number', value: iterations, onInput: onInputIterations}),
-    ]),
-  ]);
+  return h(Fragment, null);
 }
