@@ -45,3 +45,7 @@ normalized_i = i - log(log(|z(i)|) / log(bound))
 To normalize i, we want to subtract some fractional value from i to make the
 midpoint _between_ iterations for the moment when we equaled the bound. So
 that's what the subtraction is about.
+
+<div id="gl-mandelbrot">
+  <canvas id="gl-mandelbrot-canvas" width="640" height="480"></canvas>
+</div>
