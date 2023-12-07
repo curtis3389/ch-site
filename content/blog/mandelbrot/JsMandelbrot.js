@@ -85,13 +85,18 @@ export function normalize_i(i, z, bound) {
  * @param c {Complex} The complex number to calculate the z function with.
  * @param bound {number} The bound to use. Must be at least 2.
  * @param iterations {number} The maximum iterations to search.
+ * @param smooth {boolean} Whether or not to smooth/normalize the i value.
  * @returns {number} The iteration that z exceeded the bound, or -1 if not found.
  */
-export function i_when_breaks_bound(c, bound, iterations) {
+export function i_when_breaks_bound(c, bound, iterations, smooth) {
   for (let i = 0; i < iterations; ++i) {
     const z_value = Complex.abs(z(i, c));
     if (z_value > bound) {
-      return normalize_i(i, z_value, bound);
+      if (smooth) {
+        return normalize_i(i, z_value, bound);
+      }
+
+      return i;
     }
   }
   return -1;
@@ -107,8 +112,9 @@ export function i_when_breaks_bound(c, bound, iterations) {
  * @param h {number} The height of the viewport of the set.
  * @param bound {number} The bound to use to check membership in the set.
  * @param iterations {number} The maximum iterations to calculate the z function for each pixel.
+ * @param smooth {boolean} Whether or not to smooth the coloring.
  */
-export function render_mandelbrot(canvas, x, y, w, h, bound, iterations) {
+export function render_mandelbrot(canvas, x, y, w, h, bound, iterations, smooth) {
   const canvas_width = canvas.width;
   const canvas_height = canvas.height;
   const get_mandelbrot_x = (canvas_x) => ((x + (w * (canvas_x / canvas_width))));
@@ -146,7 +152,7 @@ export function render_mandelbrot(canvas, x, y, w, h, bound, iterations) {
 
   for (let y = 0; y < canvas.height; ++y) {
     for (let x = 0; x < canvas.width; ++x) {
-      const i = i_when_breaks_bound(new Complex(get_mandelbrot_x(x), get_mandelbrot_y(y)), bound, iterations);
+      const i = i_when_breaks_bound(new Complex(get_mandelbrot_x(x), get_mandelbrot_y(y)), bound, iterations, smooth);
       const {r, g, b} = get_color_for_i(i);
       set_pixel_color(x, y, r, g, b);
     }
@@ -155,12 +161,12 @@ export function render_mandelbrot(canvas, x, y, w, h, bound, iterations) {
 }
 
 export function JsMandelbrot(props) {
-  const {canvasId, bound, iterations, viewport} = props;
+  const {canvasId, bound, iterations, viewport, smooth} = props;
   const canvas = document.getElementById(canvasId);
 
   useEffect(() =>{
-    render_mandelbrot(canvas, viewport.x, viewport.y, viewport.width, viewport.height, bound, iterations);
-  }, [canvas, viewport, bound, iterations]);
+    render_mandelbrot(canvas, viewport.x, viewport.y, viewport.width, viewport.height, bound, iterations, smooth);
+  }, [canvas, viewport, bound, iterations, smooth]);
 
   return h(Fragment, null);
 }

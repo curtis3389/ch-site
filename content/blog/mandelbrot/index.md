@@ -52,7 +52,7 @@ Below is a VERY SLOW visualization of the Mandelbrot set.
 Click to zoom in. Shift-click to zoom out.
 
 <div id="mandelbrot">
-  <canvas id="mandelbrot-canvas" width="128" height="128"></canvas>
+  <canvas id="mandelbrot-canvas" width="128" height="96"></canvas>
 </div>
 
 To generate the image, we iterate over each pixel in the canvas and calculate a
@@ -154,11 +154,15 @@ the coloring with the following formula:
   </mrow>
 </math>
 
+Which looks like this:
+
+<div id="smooth-mandelbrot">
+  <canvas id="smooth-mandelbrot-canvas" width="128" height="96"></canvas>
+</div>
+
 What this is doing is using `f(i) = 2^i` to approximate `z(i)`.
 
-Using powers of 2, `log2(x)` is the value of `i` that results in `x`.
-
-So:
+Using powers of 2, `log2(x)` is the value of `i` that results in `x`, so:
 
 - `log2(bound)` is the approximate value of `i` that exactly breaks the `bound`,
   we'll call it `boundI`.

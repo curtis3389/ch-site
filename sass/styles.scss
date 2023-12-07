@@ -1,17 +1,30 @@
 $brightness-step: 10%;
 $dark-bg-color: #1d2021;
+$dark-bg2-color: #3c3836;
 $dark-fg-color: #ebdbb2;
 $dark-fg-blue: #83a598;
+$dark-fg-green: #b8bb26;
 $dark-fg-purple: #d3869b;
+$dark-fg-red: #fb4934;
+$dark-fg-yellow: #fabd2f;
 $light-bg-color: #f9f5d7;
+$light-bg2-color: #ebdbb2;
 $light-fg-color: #3c3836;
 $light-fg-blue: #076678;
+$light-fg-green: #79740e;
 $light-fg-purple: #8f3f71;
+$light-fg-red: #9d0006;
+$light-fg-yellow: #b57614;
 
 html {
     background-color: $light-bg-color;
     color: $light-fg-color;
     font-family: Hack, monospace;
+}
+
+body {
+  color: $light-fg-color;
+  font-family: Hack, monospace;
 }
 
 a:link {
@@ -30,11 +43,30 @@ a:visited {
     color: $light-fg-purple;
 }
 
+code {
+  background-color: $light-bg2-color;
+}
+
+math {
+  font-weight: bold;
+}
+
+.z-control { color: $light-fg-red; }
+.z-entity { color: $light-fg-yellow; }
+.z-storage.z-type { color: $light-fg-red; }
+.z-function-call .z-function { color: $light-fg-green; }
+.z-numeric { color: $light-fg-purple; }
+.z-variable { color: $light-fg-blue; }
+
 @media (prefers-color-scheme: dark) {
     html {
 	background-color: $dark-bg-color;
 	color: $dark-fg-color;
     }
+
+  body {
+    color: $dark-fg-color;
+  }
 
     a:link {
 	color: $dark-fg-blue;
@@ -51,4 +83,15 @@ a:visited {
     a:visited {
 	color: $dark-fg-purple;
     }
+
+  code {
+    background-color: $dark-bg2-color;
+  }
+
+  .z-control { color: $dark-fg-red; }
+  .z-entity { color: $dark-fg-yellow; }
+  .z-storage.z-type { color: $dark-fg-red; }
+  .z-function-call .z-function { color: $dark-fg-green; }
+  .z-numeric { color: $dark-fg-purple; }
+  .z-variable { color: $dark-fg-blue; }
 }

@@ -19,17 +19,35 @@ export function get_cursor_position(canvas, event) {
   };
 }
 
+function initialViewport(canvas) {
+  const aspectRatio = canvas.width / canvas.height;
+  const width = aspectRatio >= 1
+    ? 4.0
+    : aspectRatio * 4.0;
+  const height = aspectRatio >= 1
+    ? (canvas.height / canvas.width) * 4.0
+    : 4.0;
+  return {
+    x: -width / 2.0,
+    y: -height / 2.0,
+    width,
+    height,
+  };
+}
+
 export function Mandelbrot(props) {
-  const { canvasId, renderType, bound: startingBound, iterations: startingIterations } = props;
+  const {
+    canvasId,
+    renderType,
+    bound: startingBound,
+    iterations: startingIterations,
+    smooth: startSmooth,
+  } = props;
   const canvas = document.getElementById(canvasId);
-  const [viewport, setViewport] = useState({
-    x: -2.0,
-    y: -2.0,
-    width: 4.0,
-    height: 4.0,
-  });
+  const [viewport, setViewport] = useState(initialViewport(canvas));
   const [bound, setBound] = useState(startingBound ?? 2.0);
   const [iterations, setIterations] = useState(startingIterations ?? 32);
+  const [smooth, setSmooth] = useState(startSmooth);
 
   const to_mandelbrot_coordinates = (canvas_x, canvas_y) => {
     const new_x = viewport.x + (viewport.width * (canvas_x / canvas.width));
@@ -74,6 +92,7 @@ export function Mandelbrot(props) {
   };
   const onInputBound = fromEvent(setBound);
   const onInputIterations = fromEvent(setIterations);
+  const onInputSmooth = (e) => setSmooth(e.target.checked);
 
   useEffect(() => {
     canvas.addEventListener('click', onClick);
@@ -86,19 +105,24 @@ export function Mandelbrot(props) {
     canvasId,
     bound,
     iterations,
+    smooth,
     viewport,
   };
-  return h('div', null, [
+  return h('div', { class: 'row' }, [
     renderType === 'gl'
       ? h(GlMandelbrot, mandelbrotProps)
       : h(JsMandelbrot, mandelbrotProps),
-    h('label', null, [
+    h('label', { class: 'four columns' }, [
       'Bound',
       h('input', {type: 'number', value: bound, onInput: onInputBound}),
     ]),
-    h('label', null, [
+    h('label', { class: 'four columns' }, [
       'Iterations',
       h('input', {type: 'number', value: iterations, onInput: onInputIterations}),
+    ]),
+    h('label', {class: 'four columns'}, [
+      'Smooth',
+      h('input', {type: 'checkbox', checked: smooth, onInput: onInputSmooth}),
     ]),
   ]);
 }

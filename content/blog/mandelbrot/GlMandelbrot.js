@@ -9,15 +9,17 @@ const vertexShaderSource = `
   }
 `;
 
-const fragmentShaderSource = `
+function fragmentShader(iterations) {
+  return `
   precision highp float;
 
   uniform float uBound;
   uniform vec2 uTopLeft;
   uniform vec2 uDimensions;
   uniform vec2 uScreenDimensions;
+  uniform int uSmooth;
 
-  const int iterations = 256;
+  const int iterations = ${iterations};
 
   vec2 vec2Square(vec2 v) {
     float real = (v.x * v.x) - (v.y * v.y);
@@ -44,7 +46,11 @@ const fragmentShaderSource = `
     for (int i = 0; i < iterations; ++i) {
       float z = length(z(i, c));
       if (z > bound) {
-        return normalizeI(i, z, bound);
+        if (uSmooth == 1) {
+          return normalizeI(i, z, bound);
+        }
+
+        return float(i);
       }
     }
 
@@ -72,6 +78,7 @@ const fragmentShaderSource = `
     gl_FragColor = vec4(0.0, color, 0.0, 1.0);
   }
 `;
+}
 
 function compileShaderProgram(gl, vertexSource, fragmentSource) {
   const vertexShader = compileShader(gl, gl.VERTEX_SHADER, vertexSource);
@@ -107,14 +114,16 @@ class ShaderProgram {
   screenDimensions;
   canvasWidth;
   canvasHeight;
+  smooth;
 
-  constructor(gl, canvas) {
+  constructor(gl, canvas, fragmentShaderSource) {
     this.program = compileShaderProgram(gl, vertexShaderSource, fragmentShaderSource);
     this.vertexPosition = gl.getAttribLocation(this.program, 'aVertexPosition');
     this.bound = gl.getUniformLocation(this.program, 'uBound');
     this.topLeft = gl.getUniformLocation(this.program, 'uTopLeft');
     this.dimensions = gl.getUniformLocation(this.program, 'uDimensions');
     this.screenDimensions = gl.getUniformLocation(this.program, 'uScreenDimensions');
+    this.smooth = gl.getUniformLocation(this.program, 'uSmooth');
     this.canvasWidth = canvas.width;
     this.canvasHeight = canvas.height;
   }
@@ -136,7 +145,8 @@ class ShaderProgram {
     gl.uniform1f(this.bound, settings.bound)
     gl.uniform2f(this.topLeft, viewport.x, viewport.y);
     gl.uniform2f(this.dimensions, viewport.width, viewport.height);
-    gl.uniform2f(this.screenDimensions, this.canvasWidth, this.canvasHeight)
+    gl.uniform2f(this.screenDimensions, this.canvasWidth, this.canvasHeight);
+    gl.uniform1i(this.smooth, settings.smooth ? 1 : 0);
   }
 }
 
@@ -171,14 +181,20 @@ function drawScene(gl, shaderProgram, viewport, settings) {
 }
 
 export function GlMandelbrot(props) {
-  const {canvasId, bound, iterations, viewport} = props;
+  const {canvasId, bound, iterations, viewport, smooth} = props;
   const canvas = document.getElementById(canvasId);
   const gl = canvas.getContext('webgl');
-  const [shaderProgram, _setShaderProgram] = useState(new ShaderProgram(gl, canvas));
+  const [shaderProgram, setShaderProgram] = useState();
 
   useEffect(() => {
-    drawScene(gl, shaderProgram, viewport, {bound, iterations});
-  }, [gl, shaderProgram, viewport, bound, iterations]);
+    setShaderProgram(new ShaderProgram(gl, canvas, fragmentShader(iterations)));
+  }, [gl, canvas, iterations]);
+
+  useEffect(() => {
+    if (shaderProgram) {
+      drawScene(gl, shaderProgram, viewport, {bound, iterations, smooth});
+    }
+  }, [gl, shaderProgram, viewport, bound, iterations, smooth]);
 
   return h(Fragment, null);
 }
