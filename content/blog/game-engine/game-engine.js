@@ -856,16 +856,20 @@ export class PhysicsEngine {
     const restitution = 0.6;
     const collision = this.#firstCollision(o);
     if (collision) {
-      let otherToO = Vec2.subtract(o.position, collision.position);
-      const distance = Vec2.magnitude(otherToO);
-      otherToO = Vec2.normalize(otherToO);
-      const overlap = o.radius + collision.radius - distance;
-      const positionDiff = Vec2.multiply(otherToO, overlap);
-      o.position = Vec2.add(o.position, positionDiff);
-      const oToOther = Vec2.multiply(otherToO, -1.0);
-      const collisionVelocity = Vec2.dot(o.velocity, oToOther);
-      const acceleration = Vec2.multiply(otherToO, collisionVelocity);
-      return Vec2.multiply(acceleration, o.mass);
+      const otherToO = Vec2.subtract(o.position, collision.position);
+      const otherNormal = Vec2.normalize(otherToO);
+      const relativeVelocity = Vec2.subtract(o.velocity, collision.velocity);
+      const speedAwayFromOther = Vec2.dot(relativeVelocity, otherNormal);
+      if (speedAwayFromOther < 0.0) {
+        const distance = Vec2.magnitude(otherToO) - o.radius - collision.radius;
+        o.position = Vec2.subtract(o.position, Vec2.multiply(otherNormal, distance));
+
+        const mass = 1.0 / ((1.0 / o.mass) + (1.0 / collision.mass));
+        const acceleration = Vec2.multiply(
+          otherNormal,
+          (-1.0 * speedAwayFromOther * (1.0 + restitution)) / this.#tickLengthInSeconds);
+        return Vec2.multiply(acceleration, mass);
+      }
     } else if (o.position.y - o.radius <= 0.0) {
       const newY = o.radius;
       const backupRatio = (newY - o.previousPosition.y) / (o.position.y - o.previousPosition.y);
