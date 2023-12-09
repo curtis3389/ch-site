@@ -140,7 +140,6 @@ export function render_mandelbrot(canvas, x, y, w, h, bound, iterations, smooth)
     }
     const quotient = i / iterations;
     const color = Math.floor(quotient * 255);
-    // const color = Math.pow(Math.pow(quotient, 2) * 256, 1.5) % 256;
 
     return {
       r: 0,

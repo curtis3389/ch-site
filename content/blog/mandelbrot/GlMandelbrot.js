@@ -57,12 +57,18 @@ function fragmentShader(iterations) {
     return -1.0;
   }
 
-  float getColor(float i) {
+  vec4 getColor(float i) {
     if (i == -1.0) {
-      return 0.0;
+      return vec4(0.0, 0.0, 0.0, 1.0);
     }
 
-    return i / float(iterations);
+    float ratio = i / float(iterations);
+    if (ratio < 0.5) {
+      return vec4(0.0, ratio, 0.0, 1.0);
+    }
+
+    float outer = (ratio - 0.5) / 0.5;
+    return vec4(outer, ratio, outer, 1.0);
   }
 
   vec2 toSetCoords(vec2 xy) {
@@ -74,8 +80,7 @@ function fragmentShader(iterations) {
   void main() {
     vec2 location = toSetCoords(gl_FragCoord.xy);
     float i = iWhenBreaksBound(location, uBound);
-    float color = getColor(i);
-    gl_FragColor = vec4(0.0, color, 0.0, 1.0);
+    gl_FragColor = getColor(i);
   }
 `;
 }
