@@ -1,6 +1,8 @@
 +++
+date = 2023-12-06
 title = "Game Engines"
-date = 2023-11-11
+description = "What is a game engine?"
+draft = true
 +++
 
 A game engine is the foundation that a game is built on and often includes many

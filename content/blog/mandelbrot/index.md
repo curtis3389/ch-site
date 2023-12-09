@@ -1,14 +1,16 @@
 +++
+date = 2023-12-06
 title = "The Mandelbrot Set"
-date = 2023-10-26
+description = "What is the Mandelbrot set? How do you render it?"
 +++
 
 <script type="module" src="main.js"></script>
 
 ## Introduction
 
-The Mandelbrot set is the set of complex numbers, `c`, for which an infinite
-sequence of numbers `z = [z0, z1, z2, ...]` remains bounded.
+[The Mandelbrot set](https://en.wikipedia.org/wiki/Mandelbrot_set) is the set of
+complex numbers, `c`, for which an infinite sequence of numbers
+`z = [z0, z1, z2, ...]` remains bounded.
 
 Bounded means that there is a limit that the magnitude of the complex number
 never exceeds. *It must be at least 2.*

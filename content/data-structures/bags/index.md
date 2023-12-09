@@ -1,6 +1,8 @@
 +++
-title = "Bags"
 date = 2023-10-26
+title = "Bags"
+description = "Bags are add-only collections"
+draft = true
 +++
 
 <script type="module" src="bags.js"></script>
