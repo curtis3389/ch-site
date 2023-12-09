@@ -20,6 +20,7 @@ export function main() {
   o.physicsObject = new PhysicsObject();
   o.physicsObject.position = new Vec2(0, 500);
   o.physicsObject.radius = 50.0;
+  o.physicsObject.mass = 1387536755.34;
   o.graphicsObject.renderable = new TestRenderable(o.physicsObject);
   gameEngine.add(o);
   const o2 = new GameObject();
@@ -28,6 +29,7 @@ export function main() {
   o2.physicsObject = new PhysicsObject();
   o2.physicsObject.position = new Vec2(25, 750);
   o2.physicsObject.radius = 50.0;
+  o2.physicsObject.mass = 1387536755.34;
   o2.graphicsObject.renderable = new TestRenderable(o2.physicsObject);
   gameEngine.add(o2);
   gameEngine.start();
