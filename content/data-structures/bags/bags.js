@@ -6,7 +6,7 @@ import {
   PhysicsEngine,
   PhysicsObject,
   TestRenderable,
-  Vec2
+  Vec2,
 } from "../../blog/game-engine/game-engine.js";
 
 export function main() {
