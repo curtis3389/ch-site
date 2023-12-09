@@ -2,15 +2,24 @@
 
 {% block content %}
 <h1 class="title">
-  This is my blog made with Zola.
+  I'm Curtis Hollibaugh.
 </h1>
 <p>
-  Click <a href="{{ get_url(path='@/blog/_index.md') }}">here</a> to see my posts.
+  I'm a software developer. I like cooking, comics, and tabletop games.
 </p>
-<p>
-  Click <a href="{{ get_url(path='@/algorithms/_index.md') }}">here</a> to see my algorithms.
-</p>
-<p>
-  Click <a href="{{ get_url(path='@/data-structures/_index.md') }}">here</a> to see my data structures.
-</p>
+<h2>Recent Posts</h2>
+<ul class="titleList">
+  {% set all_pages = [] %}
+  {% for section_path in section.subsections  %}
+  {% set s = get_section(path=section_path) %}
+  {% set_global all_pages = all_pages | concat(with=s.pages) %}
+  {% endfor %}
+  {% for page in all_pages | sort(attribute="date") | reverse %}
+  <li>
+    <a href="{{ page.permalink | safe }}">{{ page.date }} - {{ page.title }}</a>
+    <br />
+    {{ page.description }}
+  </li>
+  {% endfor  %}
+</ul>
 {% endblock content %}
