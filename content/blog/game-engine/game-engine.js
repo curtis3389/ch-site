@@ -797,7 +797,7 @@ export class PhysicsEngine {
    * The length of time that each tick is simulating, in seconds.
    * @type {number}
    */
-  #tickLengthInSeconds = 0.1;
+  #tickLengthInSeconds = 1.0 / 120.0;
 
   /**
    * Initializes a new instance of the PhysicsEngine class.
@@ -838,13 +838,13 @@ export class PhysicsEngine {
         o.previousPosition = o.position;
         o.position = Vec2.add(o.position, positionChange);
       }
+
+      this.#previousTime = currentTime;
     }
 
     if (!this.#previousTime) {
       this.#previousTime = currentTime;
     }
-
-    this.#previousTime = this.#previousTime + (ticks * this.#tickLengthInSeconds);
   }
 
   /**
@@ -997,7 +997,7 @@ export class GameEngine {
    * Starts the game engine.
    */
   start() {
-    this.#executeFrame();
+    this.#executeFrame(document.timeline.currentTime);
   }
 
   /**

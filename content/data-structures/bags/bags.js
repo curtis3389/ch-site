@@ -12,7 +12,7 @@ import {
 export function main() {
   const canvas = document.getElementById("canvas");
   const graphicsEngine = new GraphicsEngine(canvas);
-  const physicsEngine = new PhysicsEngine(0.01);
+  const physicsEngine = new PhysicsEngine();
   const gameEngine = new GameEngine(graphicsEngine, physicsEngine);
   const o = new GameObject();
   o.graphicsObject = new GraphicsObject();
