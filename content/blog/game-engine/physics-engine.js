@@ -1,7 +1,6 @@
 import {Vec2} from './vec2.js';
-//import {Shape} from './shape.js';
-//import {Circle} from './circle.js';
-import { Shape, Circle } from './shapes.js';
+import {Circle} from './circle.js';
+import {Intersector} from "./intersector.js";
 
 /**
  * Represents a 2D physics engine.
@@ -133,7 +132,7 @@ export class PhysicsEngine {
   #firstCollision(o) {
     for (let other of this.#objects) {
       if (other !== o) {
-        const intersects = Shape.intersects(
+        const intersects = Intersector.intersects(
           new Circle(o.position, o.radius),
           new Circle(other.position, other.radius))
         if (intersects) {

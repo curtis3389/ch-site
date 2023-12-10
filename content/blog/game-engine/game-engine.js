@@ -67,17 +67,16 @@ export class GameEngine {
   }
 }
 
-//export { Circle } from './circle.js';
+export { Circle } from './circle.js';
 export { GameObject } from './game-object.js';
 export { GraphicsEngine } from './graphics-engine.js';
 export { GraphicsObject } from './graphics-object.js';
-//export { Line } from './line.js';
+export { Line } from './line.js';
 export { PhysicsEngine } from './physics-engine.js';
 export { PhysicsObject } from './physics-object.js';
-//export { Polygon } from './polygon.js';
-//export { Rectangle } from './rectangle.js';
-//export { Shape } from './shape.js';
-//export { Square } from './square.js';
+export { Polygon } from './polygon.js';
+export { Rectangle } from './rectangle.js';
+export { Shape } from './shape.js';
+export { Square } from './square.js';
 export { TestRenderable } from './test-renderable.js';
 export { Vec2 } from './vec2.js';
-export * from './shapes.js';
