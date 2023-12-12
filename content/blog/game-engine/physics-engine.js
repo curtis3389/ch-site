@@ -1,11 +1,14 @@
+import * as R from 'https://esm.sh/ramda';
 import {Vec2} from './vec2.js';
-import {Circle} from './circle.js';
-import {Intersector} from "./intersector.js";
+import {Collider} from "./collider.js";
+import {Option} from '../functional/option.js'
 
 /**
  * Represents a 2D physics engine.
  */
 export class PhysicsEngine {
+  #collider;
+
   /**
    * The objects this engine is simulating.
    * @type {PhysicsObject[]}
@@ -34,6 +37,7 @@ export class PhysicsEngine {
    */
   constructor(timeRatio = 1.0) {
     this.#timeRatio = timeRatio;
+    this.#collider = new Collider(0.6, this.#tickLengthInSeconds);
   }
 
   /**
@@ -82,64 +86,36 @@ export class PhysicsEngine {
    * @returns {Vec2} The forces acting on the object.
    */
   #calculateForcesOn(o) {
-    const restitution = 0.6;
-    const collision = this.#firstCollision(o);
-    if (collision) {
-      const otherToO = Vec2.subtract(o.position, collision.position);
-      const otherNormal = Vec2.normalize(otherToO);
-      const relativeVelocity = Vec2.subtract(o.velocity, collision.velocity);
-      const speedAwayFromOther = Vec2.dot(relativeVelocity, otherNormal);
-      if (speedAwayFromOther < 0.0) {
-        const distance = Vec2.magnitude(otherToO) - o.radius - collision.radius;
-        o.position = Vec2.subtract(o.position, Vec2.multiply(otherNormal, distance));
-
-        const mass = 1.0 / ((1.0 / o.mass) + (1.0 / collision.mass));
-        const acceleration = Vec2.multiply(
-          otherNormal,
-          (-1.0 * speedAwayFromOther * (1.0 + restitution)) / this.#tickLengthInSeconds);
-        return Vec2.multiply(acceleration, mass);
-      }
-    } else if (o.position.y - o.radius <= 0.0) {
-      const newY = o.radius;
-      const backupRatio = (newY - o.previousPosition.y) / (o.position.y - o.previousPosition.y);
-      o.position = new Vec2(
-        o.previousPosition.x + (backupRatio * (o.position.x - o.previousPosition.x)),
-        newY);
-
-      const verticalNormal = new Vec2(0.0, 1.0);
-      const verticalSpeed = Vec2.dot(o.velocity, verticalNormal);
-      if (verticalSpeed < 0.0) {
-        // impact force = acceleration * mass
-        const acceleration = Vec2.multiply(
-          verticalNormal,
-          (-1.0 * verticalSpeed * (1.0 + restitution)) / this.#tickLengthInSeconds);
-        return Vec2.multiply(acceleration, o.mass);
-      }
-    } else if (o.position.x > 1000) {
-      return Vec2.multiply(new Vec2(-1, 0), Vec2.magnitude(o.velocity) * o.mass * (1.0 + restitution) / this.#tickLengthInSeconds);
-    } else if (o.position.x < -1000) {
-      return Vec2.multiply(new Vec2(1, 0), Vec2.magnitude(o.velocity) * o.mass * (1.0 + restitution) / this.#tickLengthInSeconds);
+    const possibleCollision = this.#firstCollision(o);
+    if (possibleCollision.isSome()) {
+      const collision = possibleCollision.unwrap();
+      o.position = collision.position;
+      return collision.force;
     }
 
+    return this.#globalForcesOn(o);
+  }
+
+  #globalForcesOn(o) {
     return new Vec2(0.0, -9.8 * o.mass);
   }
 
   /**
-   * Gets the first object the given object is colliding with or undefined if none.
-   * @param o {PhysicsObject} The object to get the first thing colliding with it.
-   * @returns {PhysicsObject | undefined} The first object found colliding or undefined if none.
+   * Gets the first collision found for the given physics object.
+   * @param o {PhysicsObject} The object to get the first collision for.
+   * @returns {Option<Collision>} Some(Collision) or None.
    */
   #firstCollision(o) {
-    for (let other of this.#objects) {
-      if (other !== o) {
-        const intersects = Intersector.intersects(
-          new Circle(o.position, o.radius),
-          new Circle(other.position, other.radius))
-        if (intersects) {
-          return other;
-        }
-      }
-    }
+    const first = R.head(R.filter(
+      collision => collision.isSome(),
+      R.map(
+        other => this.#collider.collide(o, other),
+        this.#objects
+      )
+    ));
+    return !first
+      ? Option.None()
+      : first;
   }
 
   /**

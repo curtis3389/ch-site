@@ -14,4 +14,13 @@ export class Square extends Rectangle {
   constructor(topLeft, size) {
     super(topLeft, new Vec2(size, size));
   }
+
+  /**
+   * Gets this shape repositioned relative to the given location.
+   * @param l {Vec2} The location to reposition this Shape relative to.
+   * @returns {Square} A copy of this Shape repositioned relative to the location.
+   */
+  relativeTo(l) {
+    return new Square(Vec2.add(l, this.topLeft), this.width);
+  }
 }

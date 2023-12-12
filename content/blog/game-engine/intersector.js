@@ -4,6 +4,69 @@ import {Line} from './line.js';
 import {Vec2} from './vec2.js';
 
 export class Intersector {
+  static backupDistance(shapeA, shapeB) {
+    if (shapeA instanceof Circle) {
+      if (shapeB instanceof Circle) {
+        const otherToO = Vec2.subtract(shapeA.position, shapeB.position);
+        return Vec2.magnitude(otherToO) - shapeA.radius - shapeB.radius;
+      } else if (shapeB instanceof Line) {
+        // TODO: return radius - distance to closest
+        throw new Error('not implemented');
+      } else if (shapeB instanceof Polygon) {
+        // TODO: return radius - distance to closest
+        throw new Error('not implemented');
+      } else {
+        throw new Error(`Unknown Shape type: ${shapeB.constructor.name}`);
+      }
+    } else if (shapeA instanceof Line) {
+      if (shapeB instanceof Circle) {
+        // TODO: return radius - distance to closest
+        throw new Error('not implemented');
+      } else if (shapeB instanceof Line) {
+        // TODO
+        throw new Error('not implemented');
+      } else if (shapeB instanceof Polygon) {
+        // TODO
+        throw new Error('not implemented');
+      } else {
+        throw new Error(`Unknown Shape type: ${shapeB.constructor.name}`);
+      }
+    } else if ( shapeA instanceof Polygon) {
+      if (shapeB instanceof Circle) {
+        // TODO: return radius - distance to closest
+        throw new Error('not implemented');
+      } else if (shapeB instanceof Line) {
+        // TODO
+        throw new Error('not implemented');
+      } else if (shapeB instanceof Polygon) {
+        // TODO: return distance between closest
+        throw new Error('not implemented');
+      } else {
+        throw new Error(`Unknown Shape type: ${shapeB.constructor.name}`);
+      }
+    } else {
+      throw new Error(`Unknown Shape type: ${shapeA.constructor.name}`);
+    }
+  }
+
+  /**
+   *
+   * @param shape {Shape}
+   * @param planePosition {Vec2}
+   * @param planeNormal {Vec2}
+   * @returns number
+   */
+  static planeBackupDistance(shape, planePosition, planeNormal) {
+    if (shape instanceof Circle) {
+      const plane = Vec2.dot(planePosition, planeNormal);
+      const circle = Vec2.dot(shape.position, planeNormal);
+      return plane + shape.radius - circle;
+    } else {
+      // TODO
+      throw new Error('not implemented!');
+    }
+  }
+
   /**
    * Checks whether the given shapes intersect/overlap.
    * @param a {Shape} The first shape to check.

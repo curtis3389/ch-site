@@ -38,7 +38,8 @@ export class TestRenderable {
    */
   render(context) {
     context.beginPath();
-    context.arc(0, 0, this.#physicsObject.radius, 0, Math.PI * 2, true);
+    // TODO
+    context.arc(0, 0, 50, 0, Math.PI * 2, true);
     context.fillStyle = 'black';
     context.fill();
   }

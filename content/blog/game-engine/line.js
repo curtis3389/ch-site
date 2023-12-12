@@ -93,4 +93,13 @@ export class Line extends Shape {
     const projection = Vec2.dot(startToPoint, normal);
     return projection >= 0;
   }
+
+  /**
+   * Gets this shape repositioned relative to the given location.
+   * @param l {Vec2} The location to reposition this Shape relative to.
+   * @returns {Line} A copy of this Shape repositioned relative to the location.
+   */
+  relativeTo(l) {
+    return new Line(Vec2.add(l, this.#start), Vec2.add(l, this.#end));
+  }
 }

@@ -63,4 +63,13 @@ export class Polygon extends Shape {
       .map(line => line.onLeft(point))
       .reduce((previous, current) => previous === current);
   }
+
+  /**
+   * Gets this shape repositioned relative to the given location.
+   * @param l {Vec2} The location to reposition this Shape relative to.
+   * @returns {Polygon} A copy of this Shape repositioned relative to the location.
+   */
+  relativeTo(l) {
+    return new Polygon(this.#points.map(point => Vec2.add(l, point)));
+  }
 }

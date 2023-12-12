@@ -47,9 +47,17 @@ export class GameEngine {
    * @param o {GameObject} The game object to add to the engine.
    */
   add(o) {
-    this.#objects.push(o);
-    this.#physicsEngine.add(o.physicsObject);
-    this.#graphicsEngine.add(o.graphicsObject);
+    if (o) {
+      this.#objects.push(o);
+
+      if (o.physicsObject) {
+        this.#physicsEngine.add(o.physicsObject);
+      }
+
+      if (o.graphicsObject) {
+        this.#graphicsEngine.add(o.graphicsObject);
+      }
+    }
   }
 
   /**

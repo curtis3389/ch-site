@@ -1,3 +1,5 @@
+import {vec2, vec3} from 'https://esm.sh/gl-matrix';
+
 /**
  * Represents a 2D vector.
  */
@@ -22,6 +24,21 @@ export class Vec2 {
    */
   static add(a, b) {
     return new Vec2(a.x + b.x, a.y + b.y);
+  }
+
+  /**
+   *
+   * @param a {Vec2}
+   * @param b {Vec2}
+   * @returns {number}
+   */
+  static angleBetween(a, b) {
+    const cross = vec2.cross(
+      vec3.create(),
+      vec2.fromValues(a.x, a.y),
+      vec2.fromValues(b.x, b.y));
+    return Math.asin((vec3.length(cross)) / (Vec2.magnitude(a) * Vec2.magnitude(a)));
+    // return vec2.angle(vec2.fromValues(a.x, a.y), vec2.fromValues(b.x, b.y));
   }
 
   /**

@@ -1,4 +1,5 @@
 import {Shape} from './shape.js';
+import {Vec2} from "./vec2.js";
 
 /**
  * Represents a circle.
@@ -40,5 +41,14 @@ export class Circle extends Shape {
    */
   get radius() {
     return this.#radius;
+  }
+
+  /**
+   * Gets this shape repositioned relative to the given location.
+   * @param l {Vec2} The location to reposition this Shape relative to.
+   * @returns {Shape} A copy of this Shape repositioned relative to the location.
+   */
+  relativeTo(l) {
+    return new Circle(Vec2.add(l, this.position), this.radius);
   }
 }
