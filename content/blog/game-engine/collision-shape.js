@@ -1,5 +1,8 @@
 import {CollisionComponent} from "./collision-component.js";
 
+/**
+ * Represents a shape that can be collided with.
+ */
 export class CollisionShape extends CollisionComponent {
   /**
    * The shape of this collision component.

@@ -34,14 +34,26 @@ export class Rectangle extends Polygon {
     this.#dimensions = dimensions;
   }
 
+  /**
+   * Gets the height of this rectangle.
+   * @returns {number}
+   */
   get height() {
     return this.#dimensions.y;
   }
 
+  /**
+   * Gets the location of the top-left corner of this rectangle.
+   * @returns {Vec2}
+   */
   get topLeft() {
     return this.#topLeft;
   }
 
+  /**
+   * Gets the width of this rectangle.
+   * @returns {number}
+   */
   get width() {
     return this.#dimensions.x;
   }

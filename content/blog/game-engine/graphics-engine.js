@@ -12,26 +12,31 @@ export class GraphicsEngine {
    * @type {HTMLCanvasElement}
    */
   #canvas;
+
   /**
    * The 2D rendering context to render with.
    * @type {CanvasRenderingContext2D}
    */
   #context;
+
   /**
    * The maximum number of frames to render in a second.
    * @type {number}
    */
   #maxFramesPerSecond = 60.0;
+
   /**
    * The graphics objects in the engine.
    * @type {GraphicsObject[]}
    */
   #objects = [];
+
   /**
    * The timestamp the last frame was rendered.
    * @type {DOMHighResTimeStamp}
    */
   #previousTime;
+
   /**
    * The viewport.
    * @type {Rectangle}

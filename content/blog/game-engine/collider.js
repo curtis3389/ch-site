@@ -14,9 +14,23 @@ import {Option} from '../functional/option.js';
  * Represents a service for checking if two collision components are colliding.
  */
 export class Collider {
+  /**
+   * The standard restitution to use for collisions.
+   * @type {number}
+   */
   #restitution;
+
+  /**
+   * The length of each tick in seconds.
+   * @type {number}
+   */
   #tickLengthInSeconds;
 
+  /**
+   * Initializes a new instance of the Collider class.
+   * @param restitution {number} The standard restitution to use.
+   * @param tickLengthInSeconds {number} The length of each tick in seconds.
+   */
   constructor(restitution, tickLengthInSeconds) {
     this.#restitution = restitution;
     this.#tickLengthInSeconds = tickLengthInSeconds;
@@ -69,18 +83,6 @@ export class Collider {
     } else {
       throw new Error(`Unknown collision component type ${typeof componentA}!`);
     }
-  }
-
-  /**
-   * Checks if the given two collision components are colliding.
-   * @param oA {PhysicsObject} The first physics object in the collision.
-   * @param a {CollisionComponent} The first component to check.
-   * @param oB {PhysicsObject} The second physics object in the collision.
-   * @param b {CollisionComponent} The second component to check.
-   * @returns {boolean} true if the components are colliding; false otherwise.
-   */
-  colliding(oA, a, oB, b) {
-    return this.#collideComponents(oA, a, oB, b).isSome();
   }
 
   /**

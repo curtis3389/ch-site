@@ -27,10 +27,10 @@ export class Vec2 {
   }
 
   /**
-   *
-   * @param a {Vec2}
-   * @param b {Vec2}
-   * @returns {number}
+   * Gets the angle, in radians, between the given vectors.
+   * @param a {Vec2} The first vector.
+   * @param b {Vec2} The second vector.
+   * @returns {number} The angle between the vectors in radians.
    */
   static angleBetween(a, b) {
     const cross = vec2.cross(
@@ -38,7 +38,6 @@ export class Vec2 {
       vec2.fromValues(a.x, a.y),
       vec2.fromValues(b.x, b.y));
     return Math.asin((vec3.length(cross)) / (Vec2.magnitude(a) * Vec2.magnitude(a)));
-    // return vec2.angle(vec2.fromValues(a.x, a.y), vec2.fromValues(b.x, b.y));
   }
 
   /**

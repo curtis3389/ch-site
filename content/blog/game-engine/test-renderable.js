@@ -9,7 +9,7 @@ export class TestRenderable {
   #physicsObject;
 
   /**
-   * Initializs a new instance of the TestRenderable class.
+   * Initializes a new instance of the TestRenderable class.
    * @param physicsObject {PhysicsObject} The physics object to render.
    */
   constructor(physicsObject) {

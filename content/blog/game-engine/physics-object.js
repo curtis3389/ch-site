@@ -33,7 +33,7 @@ export class PhysicsObject {
 
   /**
    * The position of this object at the end of the tick before last.
-   * @type {*}
+   * @type {Vec2}
    */
   previousPosition = this.position;
 

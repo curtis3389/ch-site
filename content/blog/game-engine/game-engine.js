@@ -7,6 +7,7 @@ export class GameEngine {
    * @type {number | undefined}
    */
   #frameHandle = undefined;
+
   /**
    * Runs the next frame of the game engine.
    * @param currentTime The current timestamp, in milliseconds.
@@ -16,16 +17,19 @@ export class GameEngine {
     this.#physicsEngine.update(currentTime);
     this.#graphicsEngine.render(currentTime);
   };
+
   /**
    * The graphics engine of this game engine.
    * @type {GraphicsEngine}
    */
   #graphicsEngine;
+
   /**
    * The physics engine of this game engine.
    * @type {PhysicsEngine}
    */
   #physicsEngine;
+
   /**
    * The objects in the game engine.
    * @type {GameObject[]}
@@ -47,16 +51,18 @@ export class GameEngine {
    * @param o {GameObject} The game object to add to the engine.
    */
   add(o) {
-    if (o) {
-      this.#objects.push(o);
+    if (!o) {
+      throw new Error(`Falsy game object!`);
+    }
 
-      if (o.physicsObject) {
-        this.#physicsEngine.add(o.physicsObject);
-      }
+    this.#objects.push(o);
 
-      if (o.graphicsObject) {
-        this.#graphicsEngine.add(o.graphicsObject);
-      }
+    if (o.physicsObject) {
+      this.#physicsEngine.add(o.physicsObject);
+    }
+
+    if (o.graphicsObject) {
+      this.#graphicsEngine.add(o.graphicsObject);
     }
   }
 

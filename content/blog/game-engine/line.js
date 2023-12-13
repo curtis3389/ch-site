@@ -11,6 +11,7 @@ export class Line extends Shape {
    * @type {Vec2}
    */
   #start;
+
   /**
    * The ending point of the line.
    * @type {Vec2}

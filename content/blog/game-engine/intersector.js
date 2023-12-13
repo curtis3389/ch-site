@@ -3,7 +3,16 @@ import {Polygon} from './polygon.js';
 import {Line} from './line.js';
 import {Vec2} from './vec2.js';
 
+/**
+ * Represents a service for checking if 2 shapes are intersecting.
+ */
 export class Intersector {
+  /**
+   * Gets the distance the given shapes need to be separated to not be intersecting.
+   * @param shapeA {Shape} The first shape.
+   * @param shapeB {Shape} The second shape.
+   * @returns {number} The distance the shapes need separated.
+   */
   static backupDistance(shapeA, shapeB) {
     if (shapeA instanceof Circle) {
       if (shapeB instanceof Circle) {
@@ -50,11 +59,11 @@ export class Intersector {
   }
 
   /**
-   *
-   * @param shape {Shape}
-   * @param planePosition {Vec2}
-   * @param planeNormal {Vec2}
-   * @returns number
+   * Gets the distance the given shape needs to be moved to separate it from the given plane values.
+   * @param shape {Shape} The shape to get the distance for.
+   * @param planePosition {Vec2} The position of the plane's center.
+   * @param planeNormal {Vec2} The normal vector of the plane.
+   * @returns {number} The distance the shape needs moved.
    */
   static planeBackupDistance(shape, planePosition, planeNormal) {
     if (shape instanceof Circle) {

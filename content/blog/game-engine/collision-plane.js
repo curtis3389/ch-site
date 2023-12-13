@@ -1,5 +1,8 @@
 import {CollisionComponent} from "./collision-component.js";
 
+/**
+ * Represents a plane that can be collided with like the ground.
+ */
 export class CollisionPlane extends CollisionComponent {
   /**
    * The normal vector of the plane.

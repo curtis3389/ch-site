@@ -7,6 +7,10 @@ import {Option} from '../functional/option.js'
  * Represents a 2D physics engine.
  */
 export class PhysicsEngine {
+  /**
+   * The collision service for this engine.
+   * @type {Collider}
+   */
   #collider;
 
   /**
@@ -14,17 +18,20 @@ export class PhysicsEngine {
    * @type {PhysicsObject[]}
    */
   #objects = [];
+
   /**
    * The timestamp of the end of the last tick simulated.
    * @type {DOMHighResTimeStamp}
    */
   #previousTime;
+
   /**
    * The ratio of engine time to real-time.
    * e.g. 0.5 is half-speed and 2.0 is double-speed.
    * @type {number}
    */
   #timeRatio;
+
   /**
    * The length of time that each tick is simulating, in seconds.
    * @type {number}

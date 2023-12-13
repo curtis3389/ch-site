@@ -7,6 +7,7 @@ export class GameObject {
    * @type {GraphicsObject}
    */
   graphicsObject;
+
   /**
    * The physics component of this object.
    * @type {PhysicsObject}
