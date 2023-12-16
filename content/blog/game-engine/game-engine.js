@@ -1,3 +1,6 @@
+import {GraphicsEngine} from "./graphics-engine.js";
+import {PhysicsEngine} from "./physics-engine.js";
+
 /**
  * Represents a 2D game engine.
  */
@@ -47,14 +50,36 @@ export class GameEngine {
   }
 
   /**
+   * Gets a new builder of a game engine.
+   * @returns {GameEngineBuilder} The new game engine builder.
+   */
+  static builder() {
+    return new GameEngineBuilder();
+  }
+
+  /**
    * Adds the given game object to the engine.
-   * @param o {GameObject} The game object to add to the engine.
+   * @param o {GameObject | GameObject[]} The game object(s) to add to the engine.
    */
   add(o) {
     if (!o) {
       throw new Error(`Falsy game object!`);
     }
 
+    if (Array.isArray(o)) {
+      for (let o2 of o) {
+        this.#addGameObject(o2);
+      }
+    } else {
+      this.#addGameObject(o)
+    }
+  }
+
+  /**
+   * Adds the given game object to the engine.
+   * @param o {GameObject} The game object to add to the engine.
+   */
+  #addGameObject(o) {
     this.#objects.push(o);
 
     if (o.physicsObject) {
@@ -62,7 +87,7 @@ export class GameEngine {
     }
 
     if (o.graphicsObject) {
-      this.#graphicsEngine.add(o.graphicsObject);
+      this.#graphicsEngine.add(o, o.graphicsObject);
     }
   }
 
@@ -78,6 +103,53 @@ export class GameEngine {
    */
   stop() {
     window.cancelAnimationFrame(this.#frameHandle);
+  }
+}
+
+/**
+ * Represents a builder of GameEngines.
+ */
+export class GameEngineBuilder {
+  /**
+   * The canvas the graphics engine should use.
+   * @type {HTMLCanvasElement}
+   */
+  #canvas;
+
+  /**
+   * The builder function for the physics engine.
+   * @type {(PhysicsEngineBuilder) => PhysicsEngineBuilder}
+   */
+  #physicsBuilder;
+
+  /**
+   * Adds a graphics engine to the game engine.
+   * @param canvas {HTMLCanvasElement} The canvas element the graphics engine will use.
+   * @returns {GameEngineBuilder} This builder.
+   */
+  addGraphicsEngine(canvas) {
+    this.#canvas = canvas;
+    return this;
+  }
+
+  /**
+   * Adds a physics engine to the game engine.
+   * @param builderFn {(PhysicsEngineBuilder) => PhysicsEngineBuilder} The builder function to use to build the physics engine.
+   * @returns {GameEngineBuilder} This builder.
+   */
+  addPhysicsEngine(builderFn) {
+    this.#physicsBuilder = builderFn;
+    return this;
+  }
+
+  /**
+   * Builds a new GameEngine.
+   * @returns {GameEngine} A new GameEngine.
+   */
+  build() {
+    const graphicsEngine = new GraphicsEngine(this.#canvas);
+    const physicsEngine = this.#physicsBuilder(PhysicsEngine.builder()).build();
+    return new GameEngine(graphicsEngine, physicsEngine);
   }
 }
 

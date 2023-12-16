@@ -48,6 +48,14 @@ export class PhysicsEngine {
   }
 
   /**
+   * Gets a new builder of physics engines.
+   * @returns {PhysicsEngineBuilder} A new physics engine builder.
+   */
+  static builder() {
+    return new PhysicsEngineBuilder();
+  }
+
+  /**
    * Adds the given physics object to the simulation.
    * @param o {PhysicsObject} The physics object to add to the simulation.
    */
@@ -56,7 +64,7 @@ export class PhysicsEngine {
   }
 
   /**
-   * Updates the simulation for the given realworld timestamp.
+   * Updates the simulation for the given real-world timestamp.
    * @param currentTime {DOMHighResTimeStamp} The timestamp of the current time in the real world.
    */
   update(currentTime) {
@@ -103,6 +111,11 @@ export class PhysicsEngine {
     return this.#globalForcesOn(o);
   }
 
+  /**
+   * Gets the global forces on the given physics object.
+   * @param o {PhysicsObject} The physics object to get the forces on.
+   * @returns {Vec2} The forces on the object.
+   */
   #globalForcesOn(o) {
     return new Vec2(0.0, -9.8 * o.mass);
   }
@@ -136,5 +149,34 @@ export class PhysicsEngine {
     }
 
     return (currentTime - this.#previousTime) * this.#timeRatio / 1000.0;
+  }
+}
+
+/**
+ * Represents a builder of PhysicsEngines.
+ */
+export class PhysicsEngineBuilder {
+  /**
+   * The time ratio to use for the engine.
+   * @type {number}
+   */
+  #timeRatio;
+
+  /**
+   * Builds a new PhysicsEngine.
+   * @returns {PhysicsEngine} A new PhysicsEngine.
+   */
+  build() {
+    return new PhysicsEngine(this.#timeRatio);
+  }
+
+  /**
+   * Sets the time ratio for the new physics engine.
+   * @param ratio {number} The time ratio for the engine.
+   * @returns {PhysicsEngineBuilder} This builder.
+   */
+  timeRatio(ratio) {
+    this.#timeRatio = ratio;
+    return this;
   }
 }

@@ -27,7 +27,7 @@ export class GraphicsEngine {
 
   /**
    * The graphics objects in the engine.
-   * @type {GraphicsObject[]}
+   * @type {[GameObject, GraphicsObject[]]}
    */
   #objects = [];
 
@@ -57,10 +57,11 @@ export class GraphicsEngine {
 
   /**
    * Adds the given graphics object to this.
-   * @param o {GraphicsObject} The graphics object to add to the engine.
+   * @param o {GameObject}
+   * @param go {GraphicsObject} The graphics object to add to the engine.
    */
-  add(o) {
-    this.#objects.push(o);
+  add(o, go) {
+    this.#objects.push([o, go]);
   }
 
   /**
@@ -81,7 +82,7 @@ export class GraphicsEngine {
 
   /**
    * Renders the given graphics object.
-   * @param o The graphics object to render.
+   * @param o {[GameObject, GraphicsObject]} The graphics object to render.
    */
   #renderObject(o) {
     this.#context.resetTransform();
@@ -92,25 +93,27 @@ export class GraphicsEngine {
     this.#context.translate(-this.#viewport.position.x, -this.#viewport.position.y);
 
     // apply position transform to move canvas to object
-    this.#context.translate(o.position.x, o.position.y);
-    // TODO: this.#context.rotate(o.rotation);
-
-    // apply graphic object tranform
-    this.#context.translate(o.renderable.position.x, o.renderable.position.y);
+    // TODO: make this conditional
+    this.#context.translate(o[0].physicsObject.position.x, o[0].physicsObject.position.y);
     // TODO: this.#context.rotate(o.renderable.rotation);
 
+    // apply graphic object transform
+    this.#context.translate(o[1].position.x, o[1].position.y);
+    // TODO: this.#context.rotate(o.rotation);
+
     // render graphic object
-    o.renderable.render(this.#context);
+    o[1].renderable.render(this.#context);
   }
 
   /**
    * Gets the graphics objects that are visible in the viewport.
-   * @returns {GraphicsObject[]} The graphics objects that are visible.
+   * @returns {[GameObject, GraphicsObject][]} The graphics objects that are visible.
    */
   #getVisibleObjects() {
+    // TODO: rework this
     return this.#objects.filter(o => Intersector.intersects(
       this.#viewport,
-      new Circle(o.renderable.position, o.renderable.physicsObject.radius)));
+      new Circle(o[0].physicsObject.position, o[0].physicsObject.radius)));
   }
 
   /**
