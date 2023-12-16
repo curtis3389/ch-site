@@ -27,6 +27,12 @@ export function main() {
     GameObject.builder()
       .addPhysics(builder => builder.plane(p => p.at(1000.0, 0.0).normal(-1.0, 0.0)))
       .build(),
+    GameObject.builder()
+      .addPhysics(builder => builder.gravity())
+      .build(),
+    GameObject.builder()
+      .addPhysics(builder => builder.drag())
+      .build(),
   ]);
 
   gameEngine.start();

@@ -4,6 +4,8 @@ import {GlobalEffectComponent} from "./global-effect-component.js";
 import {CollisionShape} from "./collision-shape.js";
 import {Circle} from "./circle.js";
 import {CollisionPlane} from "./collision-plane.js";
+import {DragEffectComponent} from "./drag-effect-component.js";
+import {GravityEffectComponent} from "./gravity-effect-component.js";
 
 /**
  * Represents an object in the physics engine.
@@ -107,6 +109,24 @@ export class PhysicsObjectBuilder {
   #radius;
 
   /**
+   * The air density for a drag effect component.
+   * @type {number}
+   */
+  #airDensity;
+
+  /**
+   * The drag coefficient for a drag effect component.
+   * @type {number}
+   */
+  #dragCoefficient;
+
+  /**
+   * The number of Gs for a gravity effect component.
+   * @type {number}
+   */
+  #gravityGs;
+
+  /**
    * Sets the position of the physics object.
    * @param x {number} The x-coordinate of the physics object.
    * @param y {number} The y-coordinate of the physics object.
@@ -138,6 +158,20 @@ export class PhysicsObjectBuilder {
     ifSet(this.#planeBuilder, () => o.components.push(
       this.#planeBuilder(CollisionPlane.builder()).build()
     ));
+    ifSet(this.#dragCoefficient, () => o.components.push(
+      new DragEffectComponent(this.#airDensity, this.#dragCoefficient)
+    ));
+    ifSet(this.#gravityGs, () => o.components.push(
+      new GravityEffectComponent(this.#gravityGs)
+    ));
+    ifSet(this.#dragCoefficient, () => {
+      o.collidable = false;
+      o.simulated = false;
+    });
+    ifSet(this.#gravityGs, () => {
+      o.collidable = false;
+      o.simulated = false;
+    });
     return o;
   }
 
@@ -148,6 +182,28 @@ export class PhysicsObjectBuilder {
    */
   circle(radius) {
     this.#radius = radius;
+    return this;
+  }
+
+  /**
+   * Adds a global drag effect component to the physics object.
+   * @param airDensity {number} (Optional) The air density of the air. Defaults normal at 15C of 1.23 kg/m^3.
+   * @param coefficient {number} (Optional) The drag coefficient of the drag. Defaults to 0.6.
+   * @returns {PhysicsObjectBuilder} This builder.
+   */
+  drag(airDensity = 1.23, coefficient = 0.6) {
+    this.#airDensity = airDensity;
+    this.#dragCoefficient = coefficient;
+    return this;
+  }
+
+  /**
+   * Adds a global gravity effect to the physics object.
+   * @param gs {number} (Optional) The number of Gs of the gravity effect. Defaults to 1.0.
+   * @returns {PhysicsObjectBuilder} This builder.
+   */
+  gravity(gs = 1.0) {
+    this.#gravityGs = gs;
     return this;
   }
 

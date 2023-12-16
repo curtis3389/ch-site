@@ -2,6 +2,7 @@ import * as R from 'https://esm.sh/ramda';
 import {Vec2} from './vec2.js';
 import {Collider} from "./collider.js";
 import {Option} from '../functional/option.js'
+import {GlobalEffectComponent} from "./global-effect-component.js";
 
 /**
  * Represents a 2D physics engine.
@@ -53,6 +54,16 @@ export class PhysicsEngine {
    */
   static builder() {
     return new PhysicsEngineBuilder();
+  }
+
+  /**
+   * Gets the global effect components in this engine.
+   * @type {GlobalEffectComponent[]}
+   */
+  get globalEffects() {
+    return R.filter(
+      component => component instanceof GlobalEffectComponent,
+      R.flatten(R.map(o => o.components, this.#objects)));
   }
 
   /**
@@ -117,7 +128,11 @@ export class PhysicsEngine {
    * @returns {Vec2} The forces on the object.
    */
   #globalForcesOn(o) {
-    return new Vec2(0.0, -9.8 * o.mass);
+    return R.reduce(
+      (agg, next) => Vec2.add(agg, next),
+      new Vec2(0.0, 0.0),
+      R.map(effect => effect.forceOn(o), this.globalEffects),
+    );
   }
 
   /**
