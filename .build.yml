@@ -4,11 +4,14 @@ packages:
   - hut
   - zola
 environment:
+  repo: ch-site
   site: curtis3389.srht.site
 tasks:
   - build: |
+      cd $repo
       zola build
   - package: |
+      cd $repo
       tar -C public -cvz . > ../site.tar.gz
   - upload: |
       hut pages publish -d $site site.tar.gz
