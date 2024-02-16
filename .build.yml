@@ -7,10 +7,8 @@ environment:
   site: curtis3389.srht.site
 tasks:
   - build: |
-      cd $site
       zola build
   - package: |
-      cd $site
       tar -C public -cvz . > ../site.tar.gz
   - upload: |
       hut pages publish -d $site site.tar.gz
