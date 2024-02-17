@@ -4,8 +4,6 @@ title = "The Mandelbrot Set"
 description = "What is the Mandelbrot set? How do you render it?"
 +++
 
-<script src="bundle.js"></script>
-
 ## Introduction
 
 [The Mandelbrot set](https://en.wikipedia.org/wiki/Mandelbrot_set) is the set of
@@ -215,3 +213,5 @@ becomes "pixelated".
 This is caused by errors in the floating-point math. WebGL is restricted to
 single-precision floating-point numbers, so we run into these errors much faster
 than with JavaScript's double-precision floats.
+
+<script src="bundle.js"></script>
