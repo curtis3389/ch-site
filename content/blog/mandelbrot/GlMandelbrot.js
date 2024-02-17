@@ -1,5 +1,5 @@
-import {h, Fragment} from 'https://esm.sh/preact';
-import {useEffect, useState} from 'https://esm.sh/preact/hooks';
+import {h, Fragment} from 'preact';
+import {useEffect, useState} from 'preact/hooks';
 
 const vertexShaderSource = `
   attribute vec4 aVertexPosition;

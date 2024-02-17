@@ -4,7 +4,7 @@ title = "The Mandelbrot Set"
 description = "What is the Mandelbrot set? How do you render it?"
 +++
 
-<script type="module" src="main.js"></script>
+<script src="bundle.js"></script>
 
 ## Introduction
 

@@ -1,14 +1,18 @@
 image: alpine/edge
 oauth: pages.sr.ht/PAGES:RW
 packages:
-  - hut
+  - npm
+  - esbuild
   - zola
+  - hut
 environment:
   repo: ch-site
   site: curtis3389.srht.site
 tasks:
   - build: |
       cd $repo
+      npm install
+      esbuild ./content/blog/mandelbrot/main.js --bundle --minify --sourcemap --outfile=content/blog/mandelbrot/bundle.js
       zola build
   - package: |
       cd $repo

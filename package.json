@@ -1,0 +1,22 @@
+{
+  "name": "ch-site",
+  "version": "1.0.0",
+  "description": "Curtis Hollibaugh's personal website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/curtis3389/ch-site.git"
+  },
+  "author": "Curtis Hollibaugh",
+  "license": "AGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/curtis3389/ch-site/issues"
+  },
+  "homepage": "https://github.com/curtis3389/ch-site#readme",
+  "dependencies": {
+    "preact": "^10.19.5"
+  }
+}

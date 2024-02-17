@@ -1,5 +1,5 @@
-import {h} from 'https://esm.sh/preact';
-import {useEffect,useState} from 'https://esm.sh/preact/hooks';
+import {h} from 'preact';
+import {useEffect,useState} from 'preact/hooks';
 import {JsMandelbrot} from './JsMandelbrot.js';
 import {GlMandelbrot} from './GlMandelbrot.js';
 

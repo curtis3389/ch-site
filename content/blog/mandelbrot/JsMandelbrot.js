@@ -1,5 +1,5 @@
-import {h, Fragment} from 'https://esm.sh/preact';
-import {useEffect} from 'https://esm.sh/preact/hooks';
+import {h, Fragment} from 'preact';
+import {useEffect} from 'preact/hooks';
 
 export class Complex {
   #real;
