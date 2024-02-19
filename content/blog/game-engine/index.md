@@ -1,8 +1,7 @@
 +++
-date = 2023-12-06
+date = 2024-02-18
 title = "Game Engines"
 description = "What is a game engine?"
-draft = true
 +++
 
 A game engine is the foundation that a game is built on and often includes many
@@ -58,24 +57,10 @@ function renderNextFrame() {
 
 And that's the basics of how a game engine works!
 
-To bring the _game_ into the game engine, we need:
+You may notice that it would be quite cumbersome to make a game on top of this foundation.
 
-- to model the game as a set of states with setup steps and engine configurations
-- a UI framework built on top of our event system and graphics engine
+Complete game engines have many systems built on top of the basic foundation to simplify
+the task of creating a game. For example, in Unreal Engine there are systems for menus
+and games are defined with game modes.
 
-Then we can say:
-
-1. Start by showing the main menu state (turns off physics, shows UI)
-2. On start game, start the new game state (turns on physics, loads first level, shows game & HUD)
-3. On start multiplayer game, start the multiplayer game state (turn on physics & networking, connect to server, show game & HUD)
-
-So the game screen of Tetris might be just a few game objects:
-
-- one for the HUD
-- one for each score or number shows
-- one for the current block being placed
-- a few for the placed blocks
-- one for creating and dropping next blocks
-
-And the physics engine might be configured for Tetris, or maybe each block
-handles its own motion in its `update()` method.
+You can explore a simple 2D game engine [here](game-engine.js).

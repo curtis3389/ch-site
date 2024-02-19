@@ -1,6 +1,7 @@
 image: alpine/edge
 oauth: pages.sr.ht/PAGES:RW
 packages:
+  - make
   - npm
   - esbuild
   - zola
@@ -11,9 +12,7 @@ environment:
 tasks:
   - build: |
       cd $repo
-      npm install
-      esbuild ./content/blog/mandelbrot/main.js --bundle --minify --sourcemap --outfile=content/blog/mandelbrot/bundle.js
-      zola build
+      make build
   - package: |
       cd $repo
       tar -C public -cvz . > ../site.tar.gz
