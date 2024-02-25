@@ -95,3 +95,11 @@ math {
   .z-numeric { color: $dark-fg-purple; }
   .z-variable { color: $dark-fg-blue; }
 }
+
+.navbar ul {
+  list-style: none;
+}
+
+.navbar ul li {
+  display: inline;
+}
