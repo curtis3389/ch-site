@@ -3,7 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {% if page %}
+    <title>{{ page.title }} - Curtis' Site</title>
+    {% elif section and section.title %}
+    <title>{{ section.title }} - Curtis' Site</title>
+    {% else %}
     <title>Curtis' Site</title>
+    {% endif %}
     <link rel="stylesheet" href="/normalize.css">
     <link rel="stylesheet" href="/skeleton.css">
     <link rel='stylesheet' href="/hack-font/hack.css" />
