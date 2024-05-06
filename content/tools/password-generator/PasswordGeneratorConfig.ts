@@ -7,6 +7,13 @@ export interface PasswordGeneratorConfig {
   minimumWordLength: number;
   numberOfPasswords: number;
   numberOfWords: number;
+  paddingAfter: number;
+  paddingAlphabet: string[];
+  paddingBefore: number;
+  paddingCharacter: string;
+  paddingCharacterType: string;
+  paddingType: string;
+  padToLength: number;
   separatorAlphabet: string[];
   separatorCharacter: string;
   separatorType: string;

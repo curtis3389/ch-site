@@ -47,6 +47,11 @@ code {
   background-color: $light-bg2-color;
 }
 
+input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], input[type="password"], textarea, select {
+  color: $light-fg-color;
+  background-color: $light-bg2-color;
+}
+
 math {
   font-weight: bold;
 }
@@ -88,12 +93,32 @@ math {
     background-color: $dark-bg2-color;
   }
 
+  input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], input[type="password"], textarea, select {
+    color: $dark-fg-color;
+    background-color: $dark-bg2-color;
+  }
+
   .z-control { color: $dark-fg-red; }
   .z-entity { color: $dark-fg-yellow; }
   .z-storage.z-type { color: $dark-fg-red; }
   .z-function-call .z-function { color: $dark-fg-green; }
   .z-numeric { color: $dark-fg-purple; }
   .z-variable { color: $dark-fg-blue; }
+
+  .structure-part {
+    color: $dark-fg-blue;
+    border-color: $dark-fg-blue;
+  }
+
+  .coverage-part {
+    color: $dark-fg-red;
+    border-color: $dark-fg-red;
+  }
+
+  .coverage-part--present {
+    color: $dark-fg-green;
+    border-color: $dark-fg-green;
+  }
 }
 
 .navbar ul {
@@ -102,4 +127,31 @@ math {
 
 .navbar ul li {
   display: inline;
+}
+
+.structure-part {
+  display: inline;
+  color: $light-fg-blue;
+  border: $light-fg-blue solid 0.1em;
+  border-radius: 0.25em;
+  margin-left: 0.05em;
+  margin-right: 0.05em;
+  padding-left: 0.05em;
+  padding-right: 0.05em;
+}
+
+.coverage-part {
+  display: inline;
+  color: $light-fg-red;
+  border: $light-fg-red solid 0.1em;
+  border-radius: 0.25em;
+  margin-left: 0.05em;
+  margin-right: 0.05em;
+  padding-left: 0.05em;
+  padding-right: 0.05em;
+}
+
+.coverage-part--present {
+  color: $light-fg-green;
+  border-color: $light-fg-green;
 }

@@ -63,7 +63,11 @@ export class PasswordGenerator {
   }
 
   joinWords(words: string[]): string {
-    const spacerSymbol = this.randomSymbol();
+    const spacerSymbol =  this.config.separatorType === 'none'
+      ? ''
+      : this.config.separatorType === 'single'
+      ? this.config.separatorCharacter
+      : this.randomOf(this.config.separatorAlphabet);
     const middle = words.join(spacerSymbol);
     return words.length === 0
       ? spacerSymbol
@@ -85,14 +89,27 @@ export class PasswordGenerator {
   }
 
   padWithSymbols(s: string): string {
-    const paddingSymbol = this.randomSymbol();
-    const padding = this.range(2).map(() => paddingSymbol).join('');
-    return `${padding}${s}${padding}`;
-  }
+    if (this.config.paddingType === 'none') {
+      return s;
+    }
 
-  randomSymbol(): string {
-    const symbols = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '?', '/', '=', '+', '\\', '|', ':', ';', '<', '\'', '"', '>', '.', ','];
-    return this.randomOf(symbols);
+    const paddingSymbol = this.config.paddingCharacterType === 'single'
+      ? this.config.paddingCharacter
+      : this.randomOf(this.config.paddingAlphabet);
+
+    if (this.config.paddingType === 'adaptive') {
+      if (s.length < this.config.padToLength) {
+        const rightPad = this.range(this.config.padToLength - s.length).map(() => paddingSymbol).join('');
+        return `${s}${rightPad}`;
+      }
+
+      return s;
+    }
+
+    const leftPad = this.range(this.config.paddingBefore).map(() => paddingSymbol).join('');
+    const rightPad = this.range(this.config.paddingAfter).map(() => paddingSymbol).join('');
+
+    return `${leftPad}${s}${rightPad}`;
   }
 
   randomDigit(): number {

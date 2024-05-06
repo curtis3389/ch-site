@@ -6,6 +6,8 @@ import {PasswordGeneratorConfigInput} from './PasswordGeneratorConfigInput';
 import {PasswordList} from './PasswordList';
 import {PasswordGeneratorConfigSummary} from './PasswordGeneratorConfigSummary';
 
+const asciiSymbols = ['!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'];
+
 export function PasswordGeneratorInput() {
   const [config, setConfig] = useState<PasswordGeneratorConfig>({
     digitsAfter: 2,
@@ -16,7 +18,14 @@ export function PasswordGeneratorInput() {
     minimumWordLength: 4,
     numberOfPasswords: 10,
     numberOfWords: 4,
-    separatorAlphabet: ['*'],
+    paddingAfter: 2,
+    paddingAlphabet: asciiSymbols,
+    paddingBefore: 2,
+    paddingCharacter: '-',
+    paddingCharacterType: 'random',
+    paddingType: 'fixed',
+    padToLength: 32,
+    separatorAlphabet: asciiSymbols,
     separatorCharacter: '-',
     separatorType: 'none',
     wordTransform: 'alternating',
