@@ -17,12 +17,12 @@ export function AlphabetInput(props: AlphabetInputProps) {
   const deleteChar = (c) => setAlphabet(alphabet.filter(a => a !== c));
 
   const items = alphabet.map(c => (
-    <li>
-      {c}
-      <button onClick={() => deleteChar(c)}>🗑️</button>
+    <li class="alphabet-input__item">
+      <div class="alphabet-input__text">{c}</div>
+      <a class="alphabet-input__delete" onClick={() => deleteChar(c)}>🗑️</a>
     </li>));
   return (
-    <ul>
+    <ul class="alphabet-input">
       { items }
       <div>
         <input type="text" value={newChar} onInput={onInputChar} />

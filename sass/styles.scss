@@ -119,6 +119,10 @@ math {
     color: $dark-fg-green;
     border-color: $dark-fg-green;
   }
+
+  .alphabet-input__text {
+    border-color: $dark-fg-blue;
+  }
 }
 
 .navbar ul {
@@ -154,4 +158,26 @@ math {
 .coverage-part--present {
   color: $light-fg-green;
   border-color: $light-fg-green;
+}
+
+.alphabet-input {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.alphabet-input__item {
+  display: inline;
+}
+
+.alphabet-input__delete {
+  margin-left: 0.33em;
+  margin-right: 1em;
+}
+
+.alphabet-input__text {
+  display: inline;
+  border: $light-fg-blue solid 0.1em;
+  border-radius: 0.25em;
+  padding-left: 0.05em;
+  padding-right: 0.05em;
 }
