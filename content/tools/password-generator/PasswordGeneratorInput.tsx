@@ -27,7 +27,7 @@ export function PasswordGeneratorInput() {
     padToLength: 32,
     separatorAlphabet: asciiSymbols,
     separatorCharacter: '-',
-    separatorType: 'none',
+    separatorType: 'random',
     wordTransform: 'alternating',
   });
   const [passwords, setPasswords] = useState(null);
